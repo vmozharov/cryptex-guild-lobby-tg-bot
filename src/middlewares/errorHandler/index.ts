@@ -8,7 +8,7 @@ const middleware: MiddlewareFn<BotContext> = async (ctx, next) => {
     return await next()
   } catch (error) {
     if (error instanceof KnownError) {
-      if (error.show) return ctx.reply(error.message)
+      if (error.show) return ctx.replyWithHTML('<b>[ОШИБКА]</b>\n' + error.message)
       return ctx.reply(errors.known.message)
     }
     console.error(error)

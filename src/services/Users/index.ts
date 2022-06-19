@@ -12,7 +12,7 @@ export default class UsersService extends Service {
     return transformQueryUserToFullUser(queryUser)
   }
 
-  public async createUser(telegramID: number): Promise<FullUser> {
+  public async createUser(telegramID: number | string): Promise<FullUser> {
     const formattedID = String(telegramID)
     const queryUser = await this.database.user.create({
       data: {
@@ -21,6 +21,26 @@ export default class UsersService extends Service {
             where: {telegram_id: formattedID},
             create: {telegram_id: formattedID}
           }
+        }
+      },
+      include: getIncludeQueryForFullUser()
+    })
+    return transformQueryUserToFullUser(queryUser)
+  }
+
+  public async updateScoreUser(targetID: number, score: number, fromID: number): Promise<FullUser> {
+    await this.database.history_scores.create({
+      data: {
+        scores: score,
+        admin_id: fromID,
+        target_user_id: targetID
+      }
+    })
+    const queryUser = await this.database.user.update({
+      where: {id: targetID},
+      data: {
+        scores: {
+          increment: score
         }
       },
       include: getIncludeQueryForFullUser()

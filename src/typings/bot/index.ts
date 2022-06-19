@@ -6,5 +6,6 @@ import ru from 'locales/ru.json'
 export interface BotContext extends Context {
   locales: typeof ru,
   services: Services,
-  user: FullUser
+  user: FullUser,
+  match?: unknown
 }
