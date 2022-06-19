@@ -12,7 +12,8 @@
       "active": "Активна",
       "inactive": "Неактивна",
       "never": "Никогда"
-    }
+    },
+    "prolong": "<Продлить подписку>"
   },
   "main_buttons": {
     "status": "\uD83D\uDCC3 Статус подписки",

@@ -15,6 +15,7 @@ import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
 import settings from 'settings'
 import status from 'controllers/status'
+import prolong from 'controllers/prolong'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -34,9 +35,10 @@ bot.command('admin', onlyAdmin, admin)
 
 bot.hears(ru.main_buttons.scores, score)
 bot.hears(ru.main_buttons.status, status)
-// TODO Реализовать функцию кнопки и команды продления подписки
+bot.hears(ru.main_buttons.buy, prolong)
 
 bot.command('score', score)
 bot.command('status', status)
+bot.command('prolong', prolong)
 
 export default bot
