@@ -2,9 +2,12 @@ import servicesIntegrator from 'middlewares/servicesIntegrator'
 import filterActions from 'middlewares/filterActions'
 import errorHandler from 'middlewares/errorHandler'
 import userChecker from 'middlewares/userChecker'
+import onlyPrivate from 'middlewares/onlyPrivate'
 import onlyAdmin from 'middlewares/onlyAdmin'
 import {PrismaClient} from '@prisma/client'
 import locales from 'middlewares/locales'
+import prolong from 'controllers/prolong'
+import status from 'controllers/status'
 import {BotContext} from 'typings/bot'
 import start from 'controllers/start'
 import admin from 'controllers/admin'
@@ -14,8 +17,6 @@ import help from 'controllers/help'
 import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
 import settings from 'settings'
-import status from 'controllers/status'
-import prolong from 'controllers/prolong'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -23,8 +24,13 @@ const services = getServices(databaseClient)
 const bot = new Telegraf<BotContext>(settings.telegram.bot.token)
 
 bot.use(errorHandler)
-bot.use(filterActions)
-bot.use(locales, servicesIntegrator(services), userChecker)
+bot.use(locales, servicesIntegrator(services), filterActions, userChecker)
+
+// TODO реализовать управление баллами в чате (только для админов)
+// bot.command('+', onlyAdmin, plusScore)
+// bot.command('-', onlyAdmin, minusScore)
+
+bot.use(onlyPrivate)
 
 bot.start(start)
 bot.help(help)

@@ -15,7 +15,7 @@ model user {
   admin_type          admin_type?          @relation(fields: [admin_type_id], references: [id])
   admin_type_id       Int?
   telegram_user       telegram_user        @relation(fields: [telegram_user_id], references: [telegram_id])
-  telegram_user_id    Int                  @unique
+  telegram_user_id    String               @unique
   created_at          DateTime             @default(now())
   updated_at          DateTime             @updatedAt
   user_subscriptions  user_subscription[]
@@ -25,7 +25,7 @@ model user {
 }
 
 model telegram_user {
-  telegram_id Int      @id @unique
+  telegram_id String   @id @unique
   deleted     Boolean  @default(false)
   updated_at  DateTime @updatedAt
   user        user[]
@@ -81,7 +81,7 @@ model settings {
 }
 
 model telegram_channel {
-  telegram_id     Int              @id @unique
+  telegram_id     String           @id @unique
   created_at      DateTime         @default(now())
   updated_at      DateTime         @updatedAt
   is_chat         Boolean          @default(false)
@@ -92,7 +92,7 @@ model generated_link {
   id                  Int              @id @unique @default(autoincrement())
   link                String
   telegram_channel    telegram_channel @relation(fields: [telegram_channel_id], references: [telegram_id])
-  telegram_channel_id Int
+  telegram_channel_id String
   created_at          DateTime         @default(now())
   updated_at          DateTime         @updatedAt
 }

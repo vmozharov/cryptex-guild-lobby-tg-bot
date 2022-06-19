@@ -1,15 +1,18 @@
 import {PrismaClient} from '@prisma/client'
-import UsersService from './Users'
+import ChannelsService from './Channels'
 import LevelsService from './Levels'
+import UsersService from './Users'
 
 export interface Services {
   Users: UsersService,
-  Levels: LevelsService
+  Levels: LevelsService,
+  Channels: ChannelsService,
 }
 
 export function getServices(database: PrismaClient): Services {
   return {
     Users: new UsersService(database),
     Levels: new LevelsService(database),
+    Channels: new ChannelsService(database)
   }
 }
