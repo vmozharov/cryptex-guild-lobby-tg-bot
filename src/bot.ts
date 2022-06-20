@@ -1,10 +1,12 @@
 import servicesIntegrator from 'middlewares/servicesIntegrator'
 import onlyScoreAdmin from 'middlewares/onlyScoreAdmin'
+import onlySubscriber from 'middlewares/onlySubscriber'
 import filterActions from 'middlewares/filterActions'
 import errorHandler from 'middlewares/errorHandler'
 import userChecker from 'middlewares/userChecker'
 import onlyPrivate from 'middlewares/onlyPrivate'
 import manageScore from 'controllers/manageScore'
+import joinRequest from 'controllers/joinRequest'
 import onlyAdmin from 'middlewares/onlyAdmin'
 import onlyChat from 'middlewares/onlyChat'
 import {PrismaClient} from '@prisma/client'
@@ -32,34 +34,35 @@ bot.use(locales, servicesIntegrator(services), filterActions, userChecker)
 
 bot.hears(/^\/[-+]\d+/, onlyChat, onlyScoreAdmin, manageScore)
 
+bot.on('chat_join_request', joinRequest)
+
 bot.use(onlyPrivate)
 
 bot.start(start)
+bot.command('saveme', start)
 bot.help(help)
 bot.hears(ru.main_buttons.help, help)
 
 bot.command('admin', onlyAdmin, admin)
-// bot.use(onlySubscriber)
 
-bot.hears(ru.main_buttons.join, join)
-bot.hears(ru.main_buttons.scores, score)
+bot.hears(ru.main_buttons.join, onlySubscriber, join)
+bot.hears(ru.main_buttons.scores, onlySubscriber, score)
 bot.hears(ru.main_buttons.status, status)
 bot.hears(ru.main_buttons.buy, prolong)
 
-bot.command('join', join)
-bot.command('score', score)
+bot.command('join', onlySubscriber, join)
+bot.command('score', onlySubscriber, score)
 bot.command('status', status)
 bot.command('prolong', prolong)
 
 //TODO реализовать автоматическое исключение из чата тех, у кого нет или закончилась подписка
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
 
-//TODO реализовать проверку тех, кто присоединяется к каналам или чатам и если у этого пользователя нет подписки,
-// то автоматически исключать его
-
 //TODO реализовать админ-панель с требуемым функционалом (смотреть ТЗ)
 
 //TODO реализовать оплату (с использованием сторонних сервисов,
 // а проверку оплаты может делать отдельный скрипт или процесс)
+
+//TODO реализовать уменьшение баллов каждую неделю (можно через крон или скрипты)
 
 export default bot

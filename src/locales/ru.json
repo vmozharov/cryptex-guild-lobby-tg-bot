@@ -27,7 +27,8 @@
     "join": "\uD83D\uDEAA Войти в сообщество"
   },
   "shared": {
-    "buy_subscription": "Оплата"
+    "buy_subscription": "Оплата",
+    "only_subscribers": "Это функция доступна только участникам закрытого сообщества."
   },
   "errors": {
     "unknown": {

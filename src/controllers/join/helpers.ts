@@ -22,7 +22,11 @@ export async function getAndGenerateUserLinks(ctx: BotContext, channels: telegra
       continue
     }
     const expire_date = Math.floor(Date.now() / 1000) + 60 * 60 * 24
-    const link = await ctx.telegram.createChatInviteLink(channel.telegram_id, {member_limit: 1, expire_date})
+    const link = await ctx.telegram.createChatInviteLink(channel.telegram_id, {
+      // member_limit: 1,
+      expire_date,
+      creates_join_request: true
+    })
     if (!link.expire_date) throw new KnownError('Link\'s expire date is not defined')
     await ctx.services.Links.addLink(ctx.user.id, channel.telegram_id, link.invite_link, link.expire_date)
     channelLinks.push({channelName: chatTitle, link: link.invite_link})
