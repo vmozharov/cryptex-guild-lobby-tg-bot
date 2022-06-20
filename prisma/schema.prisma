@@ -102,8 +102,9 @@ model generated_link {
 }
 
 model level {
-  id    Int    @id @unique @default(autoincrement())
-  level Int    @unique
-  name  String @unique
-  score Int    @unique
+  id       Int    @id @unique @default(autoincrement())
+  level    Int    @unique
+  name     String @unique
+  score    Int    @unique
+  discount Int    @default(0)
 }
