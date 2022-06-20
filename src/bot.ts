@@ -8,6 +8,7 @@ import onlyPrivate from 'middlewares/onlyPrivate'
 import manageScore from 'controllers/manageScore'
 import joinRequest from 'controllers/joinRequest'
 import onlyAdmin from 'middlewares/onlyAdmin'
+import setPrice from 'controllers/setPrice'
 import onlyChat from 'middlewares/onlyChat'
 import {PrismaClient} from '@prisma/client'
 import locales from 'middlewares/locales'
@@ -43,8 +44,6 @@ bot.command('saveme', start)
 bot.help(help)
 bot.hears(ru.main_buttons.help, help)
 
-bot.command('admin', onlyAdmin, admin)
-
 bot.hears(ru.main_buttons.join, onlySubscriber, join)
 bot.hears(ru.main_buttons.scores, onlySubscriber, score)
 bot.hears(ru.main_buttons.status, status)
@@ -55,10 +54,14 @@ bot.command('score', onlySubscriber, score)
 bot.command('status', status)
 bot.command('prolong', prolong)
 
+bot.use(onlyAdmin)
+bot.command('admin', admin)
+bot.hears(/^\/set_price \d+$/, setPrice)
+
 //TODO реализовать автоматическое исключение из чата тех, у кого нет или закончилась подписка
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
 
-//TODO реализовать админ-панель с требуемым функционалом (смотреть ТЗ)
+//TODO реализовать все функции админа (смотреть ТЗ)
 
 //TODO реализовать оплату (с использованием сторонних сервисов,
 // а проверку оплаты может делать отдельный скрипт или процесс)
