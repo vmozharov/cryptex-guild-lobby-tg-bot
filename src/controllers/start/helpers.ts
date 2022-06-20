@@ -6,6 +6,7 @@ export function getMainKeyboard(ctx: BotContext) {
   return Markup.keyboard([
     [buttonsText.status, buttonsText.buy],
     [buttonsText.scores, buttonsText.help],
+    [buttonsText.join]
   ]).resize()
 }
 

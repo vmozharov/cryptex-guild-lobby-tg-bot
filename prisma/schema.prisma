@@ -22,6 +22,7 @@ model user {
   sent_telegram_mails sent_telegram_mail[]
   score_from_admin    history_scores[]     @relation("score_from_admin")
   score_to_user       history_scores[]     @relation("score_to_user")
+  generated_link      generated_link[]
 }
 
 model telegram_user {
@@ -91,8 +92,11 @@ model telegram_channel {
 model generated_link {
   id                  Int              @id @unique @default(autoincrement())
   link                String
+  user                user             @relation(fields: [user_id], references: [id])
+  user_id             Int
   telegram_channel    telegram_channel @relation(fields: [telegram_channel_id], references: [telegram_id])
   telegram_channel_id String
+  expired_date        Int
   created_at          DateTime         @default(now())
   updated_at          DateTime         @updatedAt
 }

@@ -16,6 +16,7 @@ import start from 'controllers/start'
 import admin from 'controllers/admin'
 import score from 'controllers/score'
 import {getServices} from 'services'
+import join from 'controllers/join'
 import help from 'controllers/help'
 import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
@@ -40,13 +41,12 @@ bot.hears(ru.main_buttons.help, help)
 bot.command('admin', onlyAdmin, admin)
 // bot.use(onlySubscriber)
 
-//TODO реализовать получение ссылок для входа в канал если есть подписки
-// и только на те каналы, в которых пользователь еще не состоит
-// (чтобы нельзя было плодить много ссылок и рассылать друзьям)
+bot.hears(ru.main_buttons.join, join)
 bot.hears(ru.main_buttons.scores, score)
 bot.hears(ru.main_buttons.status, status)
 bot.hears(ru.main_buttons.buy, prolong)
 
+bot.command('join', join)
 bot.command('score', score)
 bot.command('status', status)
 bot.command('prolong', prolong)
