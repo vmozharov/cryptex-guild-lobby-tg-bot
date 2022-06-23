@@ -1,7 +1,7 @@
-import {getInlineBuyKeyboard} from './helper'
+import {getInlineKeyboardBuySubscription} from 'shared/subscriptionInlineKeyboard'
 import {BotContext} from 'typings/bot'
 
 export default async (ctx: BotContext) => {
-  const inlineBuyKeyboard = getInlineBuyKeyboard(ctx)
+  const inlineBuyKeyboard = getInlineKeyboardBuySubscription()
   return ctx.reply(ctx.locales.scenes.prolong, inlineBuyKeyboard)
 }

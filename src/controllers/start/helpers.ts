@@ -9,9 +9,3 @@ export function getMainKeyboard(ctx: BotContext) {
     [buttonsText.join]
   ]).resize()
 }
-
-export function getInlineBuyKeyboard(ctx: BotContext) {
-  return Markup.inlineKeyboard([
-    {text: ctx.locales.shared.buy_subscription, callback_data: 'buy_subscription'},
-  ])
-}

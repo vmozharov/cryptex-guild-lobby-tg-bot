@@ -3,10 +3,12 @@ import onlyScoreAdmin from 'middlewares/onlyScoreAdmin'
 import onlySubscriber from 'middlewares/onlySubscriber'
 import filterActions from 'middlewares/filterActions'
 import errorHandler from 'middlewares/errorHandler'
+import actionTriggers from './actionTriggers.json'
 import userChecker from 'middlewares/userChecker'
 import onlyPrivate from 'middlewares/onlyPrivate'
 import manageScore from 'controllers/manageScore'
 import joinRequest from 'controllers/joinRequest'
+import buyAction from 'controllers/buyAction'
 import onlyAdmin from 'middlewares/onlyAdmin'
 import setPrice from 'controllers/setPrice'
 import onlyChat from 'middlewares/onlyChat'
@@ -54,11 +56,13 @@ bot.command('score', onlySubscriber, score)
 bot.command('status', status)
 bot.command('prolong', prolong)
 
+bot.action(actionTriggers.buy_subscription, buyAction)
+
 bot.use(onlyAdmin)
 bot.command('admin', admin)
 bot.hears(/^\/set_price \d+$/, setPrice)
 
-//TODO реализовать пока что просто продление подписки по нажатию на кнопку "оплата"
+// TODO реализовать неизвестную команду и возврат в меню по любому сообщению
 
 //TODO реализовать автоматическое исключение из чата тех, у кого нет или закончилась подписка
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
@@ -70,7 +74,7 @@ bot.hears(/^\/set_price \d+$/, setPrice)
 
 //TODO реализовать уменьшение баллов каждую неделю (можно через крон или скрипты)
 
-//TODO реализовать команду /setup <пароль из переменных окружения> <цена подписки>, которая проводит первичную настройку системы:
+//TODO !!!!!!! реализовать команду /setup <пароль из переменных окружения> <цена подписки>, которая проводит первичную настройку системы:
 // устанавливает главного админа (главным админом становится тот, кто вызвал команду),
 // указывает первичную цену на подписку. Бот не должен работать пока не запустится эта команда, а после запуска команда перестает работать
 // (создается поле в настройках в бд с названием "setup_completed" и значением "true", это поле проверяется всегда при взаимодействии с ботом),

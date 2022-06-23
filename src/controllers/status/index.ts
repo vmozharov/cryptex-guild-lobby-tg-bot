@@ -3,6 +3,6 @@ import {formatStatusText} from 'controllers/status/helpers'
 
 export default async (ctx: BotContext) => {
   const statusLocales = ctx.locales.scenes.status
-  const text = formatStatusText(statusLocales.text, ctx.user.has_subscription, ctx.user.subscription_end_date)
+  const text = formatStatusText(statusLocales.text, ctx.user.subscription.active, ctx.user.subscription.end_date)
   return ctx.replyWithHTML(text)
 }

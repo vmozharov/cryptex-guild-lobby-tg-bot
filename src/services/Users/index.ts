@@ -1,4 +1,4 @@
-import {getIncludeQueryForFullUser, transformQueryUserToFullUser} from './helpers'
+import {getIncludeQueryForFullUser} from './helpers'
 import {FullUser} from 'typings/services/user'
 import Service from '../Service'
 
@@ -9,23 +9,26 @@ export default class UsersService extends Service {
       include: getIncludeQueryForFullUser()
     })
     if (!queryUser) return null
-    return transformQueryUserToFullUser(queryUser)
+    return queryUser
   }
 
-  public async createUser(telegramID: number | string): Promise<FullUser> {
+  public async createUser(telegramID: number | string, priceID: number): Promise<FullUser> {
     const formattedID = String(telegramID)
-    const queryUser = await this.database.user.create({
+    return await this.database.user.create({
       data: {
         telegram_user: {
-          connectOrCreate: {
-            where: {telegram_id: formattedID},
-            create: {telegram_id: formattedID}
+          create: {
+            telegram_id: formattedID
+          }
+        },
+        subscription: {
+          create: {
+            price_id: priceID
           }
         }
       },
       include: getIncludeQueryForFullUser()
     })
-    return transformQueryUserToFullUser(queryUser)
   }
 
   public async updateScoreUser(targetID: number, score: number, fromID: number): Promise<FullUser> {
@@ -36,7 +39,7 @@ export default class UsersService extends Service {
         target_user_id: targetID
       }
     })
-    const queryUser = await this.database.user.update({
+    return await this.database.user.update({
       where: {id: targetID},
       data: {
         scores: {
@@ -45,6 +48,5 @@ export default class UsersService extends Service {
       },
       include: getIncludeQueryForFullUser()
     })
-    return transformQueryUserToFullUser(queryUser)
   }
 }
