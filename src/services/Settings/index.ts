@@ -13,6 +13,9 @@ export default class SettingsService extends Service {
 
   public async setMinPackageMonths(_months: number | string) {
     const months = String(_months)
+
+    const setting = await this.database.settings.findUnique({where: {name: 'min_package_months'}})
+    if (setting) return await this.database.settings.update({where: {name: setting.name}, data: {value: months}})
     return await this.database.settings.create({data: {name: 'min_package_months', value: months}})
   }
 

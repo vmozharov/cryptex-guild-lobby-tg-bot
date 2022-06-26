@@ -30,6 +30,7 @@ import help from 'textEvents/help'
 import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
 import config from 'config'
+import setPackageMonths from 'textEvents/setPackageMonths'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -40,7 +41,7 @@ bot.use(errorHandler)
 bot.use(locales, servicesIntegrator(services))
 bot.use(filterActions)
 
-bot.hears(/^\/setup (\S+) ([1-9]\d*)$/, onlyBeforeSetup, setup)
+bot.hears(/^\/setup (\S+) (\d*)$/, onlyBeforeSetup, setup)
 
 bot.use(onlyAfterSetup)
 
@@ -70,8 +71,9 @@ bot.command('prolong', prolong)
 bot.action(actionTriggers.buy_subscription, buyAction)
 
 bot.use(onlyAdmin)
-bot.hears(/^\/set_price ([1-9]\d*)$/, setPrice)
+bot.hears(/^\/set_price (\d*)$/, setPrice)
 bot.hears(/^\/add_level (\d+) ([\w|ЁёА-я]+) (\d+) (\d+)$/, addLevel)
+bot.hears(/^\/set_package_months (\d+)$/, setPackageMonths)
 bot.command('levels', levels)
 
 // TODO реализовать неизвестную команду и возврат в меню по любому сообщению и обновление меню по другим сообщениям
