@@ -1,4 +1,6 @@
+import AdminTypesService from 'services/AdminTypes'
 import SubscriptionsService from './Subscriotions'
+import SettingsService from 'services/Settings'
 import {PrismaClient} from '@prisma/client'
 import ChannelsService from './Channels'
 import LevelsService from './Levels'
@@ -14,6 +16,8 @@ export interface Services {
   Links: LinksService,
   Price: PriceService,
   Subscriptions: SubscriptionsService,
+  Settings: SettingsService,
+  AdminTypes: AdminTypesService,
 }
 
 export function getServices(database: PrismaClient): Services {
@@ -23,6 +27,8 @@ export function getServices(database: PrismaClient): Services {
     Channels: new ChannelsService(database),
     Links: new LinksService(database),
     Price: new PriceService(database),
-    Subscriptions: new SubscriptionsService(database)
+    Subscriptions: new SubscriptionsService(database),
+    Settings: new SettingsService(database),
+    AdminTypes: new AdminTypesService(database)
   }
 }

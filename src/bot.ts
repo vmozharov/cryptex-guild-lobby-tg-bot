@@ -1,6 +1,8 @@
 import servicesIntegrator from 'middlewares/servicesIntegrator'
+import onlyBeforeSetup from 'middlewares/onlyBeforeSetup'
 import onlyScoreAdmin from 'middlewares/onlyScoreAdmin'
 import onlySubscriber from 'middlewares/onlySubscriber'
+import onlyAfterSetup from 'middlewares/onlyAfterSetup'
 import filterActions from 'middlewares/filterActions'
 import errorHandler from 'middlewares/errorHandler'
 import actionTriggers from './actionTriggers.json'
@@ -18,7 +20,7 @@ import prolong from 'controllers/prolong'
 import status from 'controllers/status'
 import {BotContext} from 'typings/bot'
 import start from 'controllers/start'
-import admin from 'controllers/admin'
+import setup from 'controllers/setup'
 import score from 'controllers/score'
 import {getServices} from 'services'
 import join from 'controllers/join'
@@ -33,7 +35,14 @@ const services = getServices(databaseClient)
 const bot = new Telegraf<BotContext>(settings.telegram.bot.token)
 
 bot.use(errorHandler)
-bot.use(locales, servicesIntegrator(services), filterActions, userChecker)
+bot.use(locales, servicesIntegrator(services))
+bot.use(filterActions)
+
+bot.hears(/^\/setup (\S+) ([1-9]\d*)$/, onlyBeforeSetup, setup)
+
+bot.use(onlyAfterSetup)
+
+bot.use(userChecker)
 
 bot.hears(/^\/[-+]\d+/, onlyChat, onlyScoreAdmin, manageScore)
 
@@ -59,10 +68,9 @@ bot.command('prolong', prolong)
 bot.action(actionTriggers.buy_subscription, buyAction)
 
 bot.use(onlyAdmin)
-bot.command('admin', admin)
-bot.hears(/^\/set_price \d+$/, setPrice)
+bot.hears(/^\/set_price ([1-9]\d*)$/, setPrice)
 
-// TODO реализовать неизвестную команду и возврат в меню по любому сообщению
+// TODO реализовать неизвестную команду и возврат в меню по любому сообщению и обновление меню по другим сообщениям
 
 //TODO реализовать автоматическое исключение из чата тех, у кого нет или закончилась подписка
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
@@ -73,11 +81,5 @@ bot.hears(/^\/set_price \d+$/, setPrice)
 // а проверку оплаты может делать отдельный скрипт или процесс)
 
 //TODO реализовать уменьшение баллов каждую неделю (можно через крон или скрипты)
-
-//TODO !!!!!!! реализовать команду /setup <пароль из переменных окружения> <цена подписки>, которая проводит первичную настройку системы:
-// устанавливает главного админа (главным админом становится тот, кто вызвал команду),
-// указывает первичную цену на подписку. Бот не должен работать пока не запустится эта команда, а после запуска команда перестает работать
-// (создается поле в настройках в бд с названием "setup_completed" и значением "true", это поле проверяется всегда при взаимодействии с ботом),
-// а так же, создаются все другие необходимые строку в БД для работы бота (например, типы админов, минимальный пакет в настройках и т.д.)
 
 export default bot

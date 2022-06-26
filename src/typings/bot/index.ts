@@ -1,6 +1,6 @@
+import {Context, NarrowedContext, Types} from 'telegraf'
 import {FullUser} from 'typings/services/user'
 import {Services} from 'services'
-import {Context} from 'telegraf'
 import ru from 'locales/ru.json'
 
 export interface BotContext extends Context {
@@ -9,3 +9,6 @@ export interface BotContext extends Context {
   user: FullUser,
   match?: unknown
 }
+
+export type TextContext = NarrowedContext<BotContext, Types.MountMap['text']>
+export type TextRegExContext = NarrowedContext<BotContext & {match: RegExpExecArray}, Types.MountMap['text']>
