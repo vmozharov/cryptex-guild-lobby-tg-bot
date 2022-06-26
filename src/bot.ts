@@ -1,4 +1,5 @@
 import servicesIntegrator from 'middlewares/servicesIntegrator'
+import setPackageMonths from 'textEvents/setPackageMonths'
 import onlyBeforeSetup from 'middlewares/onlyBeforeSetup'
 import onlyScoreAdmin from 'middlewares/onlyScoreAdmin'
 import onlySubscriber from 'middlewares/onlySubscriber'
@@ -18,6 +19,7 @@ import setPrice from 'textEvents/setPrice'
 import addLevel from 'textEvents/addLevel'
 import locales from 'middlewares/locales'
 import prolong from 'textEvents/prolong'
+import addChat from 'textEvents/addChat'
 import levels from 'textEvents/levels'
 import status from 'textEvents/status'
 import {BotContext} from 'typings/bot'
@@ -30,8 +32,6 @@ import help from 'textEvents/help'
 import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
 import config from 'config'
-import setPackageMonths from 'textEvents/setPackageMonths'
-import addChat from 'textEvents/addChat'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -83,10 +83,18 @@ bot.command('levels', levels)
 //TODO реализовать автоматическое исключение из чата тех, у кого нет или закончилась подписка
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
 
-//TODO реализовать все функции админа (смотреть ТЗ)
+//TODO реализовать добавление админов (только по баллам)
+
+// TODO реализовать возможность главному админу забирать или выдавать пользователям месяцы доступа или вечный доступ
+
+// TODO реализовать возможность главному админу исключать и возвращать участника из сообщества
+//  (без возможности даже взаимодействовать с ботом)
 
 //TODO реализовать оплату (с использованием сторонних сервисов,
 // а проверку оплаты может делать отдельный скрипт или процесс)
+
+// TODO если возможно, то реализовать мут командой в чате (через restrictChatMember)
+//  (должны использовать и не главные админы)
 
 //TODO реализовать уменьшение баллов каждую неделю (можно через крон или скрипты)
 
