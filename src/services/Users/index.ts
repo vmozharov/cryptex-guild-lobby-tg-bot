@@ -3,7 +3,7 @@ import {FullUser} from 'typings/services/user'
 import Service from '../Service'
 
 export default class UsersService extends Service {
-  public async getUserByTelegramID(telegram_user_id: number): Promise<FullUser | null> {
+  public async getUserByTelegramID(telegram_user_id: string): Promise<FullUser | null> {
     const queryUser = await this.database.user.findUnique({
       where: {telegram_user_id},
       include: getIncludeQueryForFullUser()
@@ -12,7 +12,7 @@ export default class UsersService extends Service {
     return queryUser
   }
 
-  public async createUser(telegram_id: number, price_id: number): Promise<FullUser> {
+  public async createUser(telegram_id: string, price_id: number): Promise<FullUser> {
     return await this.database.user.create({
       data: {
         telegram_user: {create: {telegram_id}},

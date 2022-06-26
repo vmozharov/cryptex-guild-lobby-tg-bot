@@ -11,7 +11,7 @@ export default async (ctx: TextRegExContext) => {
     throw new KnownError(ctx.locales.errors.scores.not_user_or_score)
   }
 
-  let targetUser = await ctx.services.Users.getUserByTelegramID(targetTelegramUser.id)
+  let targetUser = await ctx.services.Users.getUserByTelegramID(targetTelegramUser.id.toString())
   if (!targetUser) throw new KnownError(ctx.locales.errors.scores.not_user)
   const prevLevelOfUser = await ctx.services.Levels.getLevelByScore(targetUser.scores)
   if (!prevLevelOfUser) throw new KnownError(ctx.locales.errors.levels_problem)

@@ -15,7 +15,7 @@ model user {
   admin_type          admin_type?          @relation(fields: [admin_type_id], references: [id])
   admin_type_id       Int?
   telegram_user       telegram_user        @relation(fields: [telegram_user_id], references: [telegram_id])
-  telegram_user_id    Int                  @unique
+  telegram_user_id    String               @unique
   created_at          DateTime             @default(now())
   updated_at          DateTime             @updatedAt
   subscription        user_subscription    @relation(fields: [subscription_id], references: [id])
@@ -27,7 +27,7 @@ model user {
 }
 
 model telegram_user {
-  telegram_id Int      @id @unique
+  telegram_id String   @id @unique
   deleted     Boolean  @default(false)
   updated_at  DateTime @updatedAt
   user        user?

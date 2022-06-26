@@ -20,14 +20,7 @@ export default class LinksService extends Service {
     })
   }
 
-  public async addLink(userID: number, channelID: string, link: string, expiredDate: number) {
-    await this.database.generated_link.create({
-      data: {
-        user_id: userID,
-        telegram_channel_id: channelID,
-        link,
-        expired_date: expiredDate
-      }
-    })
+  public async addLink(user_id: number, telegram_channel_id: string, link: string, expired_date: number) {
+    await this.database.generated_link.create({data: {user_id, telegram_channel_id, link, expired_date}})
   }
 }

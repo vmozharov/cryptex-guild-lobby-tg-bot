@@ -11,7 +11,7 @@ export default async (ctx: TextRegExContext) => {
   const historyPrice = await ctx.services.Price.setPrice(Number(price))
   const mainAdminType = await ctx.services.AdminTypes.create('main', true, true)
   await ctx.services.AdminTypes.create('regular', true, false)
-  const user = await ctx.services.Users.createUser(ctx.from.id, historyPrice.id)
+  const user = await ctx.services.Users.createUser(ctx.from.id.toString(), historyPrice.id)
   await ctx.services.AdminTypes.addToAdmin(user.id, mainAdminType.id)
   await ctx.services.Subscriptions.turnSubscriptionOfUser(user.id, true)
   await ctx.services.Settings.setMinPackageMonths(config.defaultMinPackageMonths)

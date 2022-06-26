@@ -31,6 +31,7 @@ import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
 import config from 'config'
 import setPackageMonths from 'textEvents/setPackageMonths'
+import addChat from 'textEvents/addChat'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -74,6 +75,7 @@ bot.use(onlyAdmin)
 bot.hears(/^\/set_price (\d*)$/, setPrice)
 bot.hears(/^\/add_level (\d+) ([\w|ЁёА-я]+) (\d+) (\d+)$/, addLevel)
 bot.hears(/^\/set_package_months (\d+)$/, setPackageMonths)
+bot.hears(/^\/add_chat (-\d+)$/, addChat)
 bot.command('levels', levels)
 
 // TODO реализовать неизвестную команду и возврат в меню по любому сообщению и обновление меню по другим сообщениям
