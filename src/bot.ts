@@ -17,6 +17,7 @@ import onlyChat from 'middlewares/onlyChat'
 import {PrismaClient} from '@prisma/client'
 import locales from 'middlewares/locales'
 import prolong from 'controllers/prolong'
+import levels from 'controllers/levels'
 import status from 'controllers/status'
 import {BotContext} from 'typings/bot'
 import start from 'controllers/start'
@@ -69,6 +70,7 @@ bot.action(actionTriggers.buy_subscription, buyAction)
 
 bot.use(onlyAdmin)
 bot.hears(/^\/set_price ([1-9]\d*)$/, setPrice)
+bot.command('levels', levels)
 
 // TODO реализовать неизвестную команду и возврат в меню по любому сообщению и обновление меню по другим сообщениям
 
