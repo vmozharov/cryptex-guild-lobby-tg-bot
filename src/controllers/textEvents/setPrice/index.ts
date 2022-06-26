@@ -1,7 +1,7 @@
+import {TextRegExContext} from 'typings/bot'
 import {formatPriceText} from './helpers'
-import {BotContext} from 'typings/bot'
 
-export default async (ctx: BotContext) => {
+export default async (ctx: TextRegExContext) => {
   const match = ctx.match as Array<unknown>
   const command = match[0] as string
   const price = Number(command.slice(11))

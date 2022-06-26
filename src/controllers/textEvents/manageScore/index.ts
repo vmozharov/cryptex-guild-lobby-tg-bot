@@ -1,10 +1,10 @@
 import {formatTextChangeScore, formatTextNewLevel, getScoreFromCommand, getUserIDOfForwardMessage} from './helpers'
-import {BotContext} from 'typings/bot'
+import {TextRegExContext} from 'typings/bot'
 import KnownError from 'KnownError'
 import {sleep} from 'utils/sleep'
 import {Message} from 'typegram'
 
-export default async (ctx: BotContext) => {
+export default async (ctx: TextRegExContext) => {
   const targetTelegramUser = getUserIDOfForwardMessage(ctx)
   const score = getScoreFromCommand(ctx)
   if (!targetTelegramUser || !score || targetTelegramUser.is_bot) {

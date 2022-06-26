@@ -1,5 +1,5 @@
 import {BotContext} from 'typings/bot'
-import {formatText} from 'controllers/score/helpers'
+import {formatText} from './helpers'
 import KnownError from 'KnownError'
 
 export default async (ctx: BotContext) => {

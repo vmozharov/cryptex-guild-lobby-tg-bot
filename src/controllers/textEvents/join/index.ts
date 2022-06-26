@@ -1,7 +1,7 @@
 import {formatLinksText, getAndGenerateUserLinks, getRequiredChannels} from './helpers'
-import {BotContext} from 'typings/bot'
+import {TextContext} from 'typings/bot'
 
-export default async (ctx: BotContext) => {
+export default async (ctx: TextContext) => {
   const channels = await ctx.services.Channels.getChannels()
   await ctx.services.Links.deleteExpiredUserLinks(ctx.user.id)
   const currentLinks = await ctx.services.Links.getUserLinks(ctx.user.id)

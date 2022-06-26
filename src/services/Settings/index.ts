@@ -1,4 +1,5 @@
 import Service from 'services/Service'
+import config from 'config'
 
 export default class SettingsService extends Service {
   public async setup() {
@@ -13,5 +14,10 @@ export default class SettingsService extends Service {
   public async setMinPackageMonths(_months: number | string) {
     const months = String(_months)
     return await this.database.settings.create({data: {name: 'min_package_months', value: months}})
+  }
+
+  public async getMinPackageMonths() {
+    const months = await this.database.settings.findUnique({where: {name: 'min_package_months'}})
+    return months ? Number(months.value) : config.defaultMinPackageMonths
   }
 }

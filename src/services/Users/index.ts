@@ -3,29 +3,20 @@ import {FullUser} from 'typings/services/user'
 import Service from '../Service'
 
 export default class UsersService extends Service {
-  public async getUserByTelegramID(telegramID: number): Promise<FullUser | null> {
+  public async getUserByTelegramID(telegram_user_id: number): Promise<FullUser | null> {
     const queryUser = await this.database.user.findUnique({
-      where: {telegram_user_id: String(telegramID)},
+      where: {telegram_user_id},
       include: getIncludeQueryForFullUser()
     })
     if (!queryUser) return null
     return queryUser
   }
 
-  public async createUser(telegramID: number | string, priceID: number): Promise<FullUser> {
-    const formattedID = String(telegramID)
+  public async createUser(telegram_id: number, price_id: number): Promise<FullUser> {
     return await this.database.user.create({
       data: {
-        telegram_user: {
-          create: {
-            telegram_id: formattedID
-          }
-        },
-        subscription: {
-          create: {
-            price_id: priceID
-          }
-        }
+        telegram_user: {create: {telegram_id}},
+        subscription: {create: {price_id}}
       },
       include: getIncludeQueryForFullUser()
     })

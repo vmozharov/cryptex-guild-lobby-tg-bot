@@ -2,38 +2,39 @@ import servicesIntegrator from 'middlewares/servicesIntegrator'
 import onlyBeforeSetup from 'middlewares/onlyBeforeSetup'
 import onlyScoreAdmin from 'middlewares/onlyScoreAdmin'
 import onlySubscriber from 'middlewares/onlySubscriber'
+import joinRequest from 'joinRequestEvents/joinRequest'
 import onlyAfterSetup from 'middlewares/onlyAfterSetup'
 import filterActions from 'middlewares/filterActions'
 import errorHandler from 'middlewares/errorHandler'
 import actionTriggers from './actionTriggers.json'
 import userChecker from 'middlewares/userChecker'
 import onlyPrivate from 'middlewares/onlyPrivate'
-import manageScore from 'controllers/manageScore'
-import joinRequest from 'controllers/joinRequest'
-import buyAction from 'controllers/buyAction'
+import manageScore from 'textEvents/manageScore'
+import buyAction from 'callbackQueryEvents/buy'
 import onlyAdmin from 'middlewares/onlyAdmin'
-import setPrice from 'controllers/setPrice'
 import onlyChat from 'middlewares/onlyChat'
 import {PrismaClient} from '@prisma/client'
+import setPrice from 'textEvents/setPrice'
+import addLevel from 'textEvents/addLevel'
 import locales from 'middlewares/locales'
-import prolong from 'controllers/prolong'
-import levels from 'controllers/levels'
-import status from 'controllers/status'
+import prolong from 'textEvents/prolong'
+import levels from 'textEvents/levels'
+import status from 'textEvents/status'
 import {BotContext} from 'typings/bot'
-import start from 'controllers/start'
-import setup from 'controllers/setup'
-import score from 'controllers/score'
+import start from 'textEvents/start'
+import setup from 'textEvents/setup'
+import score from 'textEvents/score'
 import {getServices} from 'services'
-import join from 'controllers/join'
-import help from 'controllers/help'
+import join from 'textEvents/join'
+import help from 'textEvents/help'
 import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
-import settings from 'settings'
+import config from 'config'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
 
-const bot = new Telegraf<BotContext>(settings.telegram.bot.token)
+const bot = new Telegraf<BotContext>(config.telegram.bot.token)
 
 bot.use(errorHandler)
 bot.use(locales, servicesIntegrator(services))
@@ -45,7 +46,7 @@ bot.use(onlyAfterSetup)
 
 bot.use(userChecker)
 
-bot.hears(/^\/[-+]\d+/, onlyChat, onlyScoreAdmin, manageScore)
+bot.hears(/^\/([-+])(\d+)/, onlyChat, onlyScoreAdmin, manageScore)
 
 bot.on('chat_join_request', joinRequest)
 
@@ -70,6 +71,7 @@ bot.action(actionTriggers.buy_subscription, buyAction)
 
 bot.use(onlyAdmin)
 bot.hears(/^\/set_price ([1-9]\d*)$/, setPrice)
+bot.hears(/^\/add_level (\d+) ([\w|ЁёА-я]+) (\d+) (\d+)$/, addLevel)
 bot.command('levels', levels)
 
 // TODO реализовать неизвестную команду и возврат в меню по любому сообщению и обновление меню по другим сообщениям

@@ -7,6 +7,9 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
+      "textEvents/*": ["src/controllers/textEvents/*"],
+      "joinRequestEvents/*": ["src/controllers/joinRequestEvents/*"],
+      "callbackQueryEvents/*": ["src/controllers/callbackQueryEvents/*"],
       "*": ["src/*"]
     },
     "declaration": false,

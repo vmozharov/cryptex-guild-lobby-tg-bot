@@ -1,5 +1,5 @@
 import {BotContext} from 'typings/bot'
-import {formatStatusText} from 'controllers/status/helpers'
+import {formatStatusText} from 'controllers/textEvents/status/helpers'
 
 export default async (ctx: BotContext) => {
   const statusLocales = ctx.locales.scenes.status

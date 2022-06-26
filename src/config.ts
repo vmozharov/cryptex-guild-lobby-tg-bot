@@ -5,4 +5,5 @@ export default {
     }
   },
   password: String(process.env['APP_SETUP_PASSWORD']),
+  defaultMinPackageMonths: 3
 }

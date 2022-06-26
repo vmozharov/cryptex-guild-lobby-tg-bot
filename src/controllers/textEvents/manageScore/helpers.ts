@@ -1,8 +1,7 @@
-import {BotContext} from 'typings/bot'
-import {isArray} from 'lodash'
+import {TextRegExContext} from 'typings/bot'
 import {level} from '@prisma/client'
 
-export function getUserIDOfForwardMessage(ctx: BotContext) {
+export function getUserIDOfForwardMessage(ctx: TextRegExContext) {
   if (!('message' in ctx.update && 'reply_to_message' in ctx.update.message)) return null
   const forwardMessage = ctx.update.message.reply_to_message
   if (!forwardMessage) return null
@@ -10,10 +9,8 @@ export function getUserIDOfForwardMessage(ctx: BotContext) {
   return forwardMessage.from ?? null
 }
 
-export function getScoreFromCommand(ctx: BotContext) {
-  if (!ctx.match && !isArray(ctx.match)) return null
-  const match = ctx.match as Array<unknown>
-  const command = match[0] as string
+export function getScoreFromCommand(ctx: TextRegExContext) {
+  const command = ctx.match[0] as string
   return Number(command.slice(1))
 }
 
