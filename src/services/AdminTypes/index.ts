@@ -9,4 +9,20 @@ export default class AdminTypesService extends Service {
     const where = typeof admin_type === 'string' ? {name: admin_type} : {id: admin_type}
     return await this.database.admin_type.update({where, data: {users: {connect: {id: user_id}}}})
   }
+
+  public async removeFromAdmin(user_id: number, admin_type: string | number) {
+    const where = typeof admin_type === 'string' ? {name: admin_type} : {id: admin_type}
+    return await this.database.admin_type.update({
+      where,
+      data: {
+        users: {
+          disconnect: {id: user_id}
+        }
+      }
+    })
+  }
+
+  public async getAdminType(name: string) {
+    return await this.database.admin_type.findUnique({where: {name}})
+  }
 }

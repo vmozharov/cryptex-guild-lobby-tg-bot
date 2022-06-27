@@ -32,6 +32,8 @@ import help from 'textEvents/help'
 import {Telegraf} from 'telegraf'
 import ru from 'locales/ru.json'
 import config from 'config'
+import addAdmin from 'textEvents/addAdmin'
+import removeAdmin from 'textEvents/removeAdmin'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -71,19 +73,18 @@ bot.command('prolong', prolong)
 
 bot.action(actionTriggers.buy_subscription, buyAction)
 
-bot.use(onlyAdmin)
-bot.hears(/^\/set_price (\d*)$/, setPrice)
-bot.hears(/^\/add_level (\d+) ([\w|ЁёА-я]+) (\d+) (\d+)$/, addLevel)
-bot.hears(/^\/set_package_months (\d+)$/, setPackageMonths)
-bot.hears(/^\/add_chat (-\d+)$/, addChat)
-bot.command('levels', levels)
+bot.hears(/^\/set_price (\d*)$/, onlyAdmin, setPrice)
+bot.hears(/^\/add_level (\d+) ([\w|ЁёА-я]+) (\d+) (\d+)$/, onlyAdmin, addLevel)
+bot.hears(/^\/set_package_months (\d+)$/, onlyAdmin, setPackageMonths)
+bot.hears(/^\/add_chat (-\d+)$/, onlyAdmin, addChat)
+bot.hears(/^\/add_admin (\d+)$/, onlyAdmin, addAdmin)
+bot.hears(/^\/remove_admin (\d+)$/, onlyAdmin, removeAdmin)
+bot.command('levels', onlyAdmin, levels)
 
-// TODO реализовать неизвестную команду и возврат в меню по любому сообщению и обновление меню по другим сообщениям
+bot.on('text', start)
 
 //TODO реализовать автоматическое исключение из чата тех, у кого нет или закончилась подписка
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
-
-//TODO реализовать добавление админов (только по баллам)
 
 // TODO реализовать возможность главному админу забирать или выдавать пользователям месяцы доступа или вечный доступ
 
