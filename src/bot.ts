@@ -37,6 +37,13 @@ import removeAdmin from 'textEvents/removeAdmin'
 import exclude from 'textEvents/exclude'
 import unban from 'textEvents/unban'
 import mute from 'textEvents/mute'
+import giveMonths from 'textEvents/giveMonths'
+import takeMonths from 'textEvents/takeMonths'
+import removeEndDate from 'textEvents/removeEndDate'
+import activateSubscription from 'textEvents/activateSubscription'
+import deactivateSubscription from 'textEvents/deactivateSubscription'
+import helpAdmin from 'textEvents/helpAdmin'
+import removeLevel from 'textEvents/removeLevel'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -79,13 +86,20 @@ bot.action(actionTriggers.buy_subscription, buyAction)
 
 bot.hears(/^\/set_price (\d*)$/, onlyAdmin, setPrice)
 bot.hears(/^\/add_level (\d+) ([\w|ЁёА-я]+) (\d+) (\d+)$/, onlyAdmin, addLevel)
+bot.hears(/^\/remove_level (\d+)$/, onlyAdmin, removeLevel)
 bot.hears(/^\/set_package_months (\d+)$/, onlyAdmin, setPackageMonths)
 bot.hears(/^\/add_chat (-\d+)$/, onlyAdmin, addChat)
 bot.hears(/^\/add_admin (\d+)$/, onlyAdmin, addAdmin)
 bot.hears(/^\/remove_admin (\d+)$/, onlyAdmin, removeAdmin)
 bot.hears(/^\/exclude (\d+)$/, onlyAdmin, exclude)
 bot.hears(/^\/unban (\d+)$/, onlyAdmin, unban)
+bot.hears(/^\/give_months (\d+) (\d+)$/, onlyAdmin, giveMonths)
+bot.hears(/^\/take_months (\d+) (\d+)$/, onlyAdmin, takeMonths)
+bot.hears(/^\/remove_end_date (\d+)$/, onlyAdmin, removeEndDate)
+bot.hears(/^\/activate_subscription (\d+)$/, onlyAdmin, activateSubscription)
+bot.hears(/^\/deactivate_subscription (\d+)$/, onlyAdmin, deactivateSubscription)
 bot.command('levels', onlyAdmin, levels)
+bot.command('help_admin', onlyAdmin, helpAdmin)
 
 bot.on('text', start)
 
@@ -93,13 +107,8 @@ bot.on('text', start)
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
 // Он должен очищать EndDate и убирать активную подписку
 
-// TODO реализовать возможность главному админу забирать или выдавать пользователям месяцы доступа или вечный доступ
-
 //TODO реализовать оплату (с использованием сторонних сервисов,
 // а проверку оплаты может делать отдельный скрипт или процесс)
-
-// TODO если возможно, то реализовать мут командой в чате (через restrictChatMember)
-//  (должны использовать и не главные админы)
 
 //TODO реализовать уменьшение баллов каждую неделю (можно через крон или скрипты)
 

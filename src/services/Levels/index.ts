@@ -14,6 +14,14 @@ export default class LevelsService extends Service {
     return await this.database.level.findMany()
   }
 
+  public async getLevel(level: number) {
+    return await this.database.level.findUnique({where: {level}})
+  }
+
+  public async deleteLevel(level: number) {
+    return await this.database.level.delete({where: {level}})
+  }
+
   public async create(name: string, level: number, score: number, discount: number) {
     return await this.database.level.create({data: {name, score, discount, level}})
   }

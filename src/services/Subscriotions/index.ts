@@ -44,6 +44,16 @@ export default class SubscriptionsService extends Service {
     if (!userSubscription.active) await this.turnSubscriptionOfUser(userID, true)
   }
 
+  public async takeMonthsOfSubscriptionUser(userID: number, months: number) {
+    const userSubscription = await this.database.user_subscription.findFirst({where: {user: {id: userID}}})
+    if (!userSubscription) throw new KnownError('Не удалось найти подписку пользователя.')
+    if (!userSubscription.end_date) return
+
+    const newEndDate = userSubscription.end_date
+    newEndDate.setDate(newEndDate.getDate() - months * 31)
+    await this.database.user_subscription.updateMany({where: {user: {id: userID}}, data: {end_date: newEndDate}})
+  }
+
   public async removeEndDateSubscriptionOfUser(userID: number) {
     await this.database.user_subscription.updateMany({
       where: {user: {id: userID}},
