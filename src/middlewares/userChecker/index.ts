@@ -10,6 +10,7 @@ const middleware: MiddlewareFn<BotContext> = async (ctx, next) => {
     if (!lastPrice) throw new KnownError('В базе отсутствует цена за подписку.')
     user = await ctx.services.Users.createUser(ctx.from.id.toString(), lastPrice.id)
   }
+  if (user.excluded) return ctx.reply('Вы были исключены из сообщества и больше не можете с ним взаимодействовать.')
   ctx.user = user
   return next()
 }

@@ -34,6 +34,9 @@ import ru from 'locales/ru.json'
 import config from 'config'
 import addAdmin from 'textEvents/addAdmin'
 import removeAdmin from 'textEvents/removeAdmin'
+import exclude from 'textEvents/exclude'
+import unban from 'textEvents/unban'
+import mute from 'textEvents/mute'
 
 const databaseClient = new PrismaClient()
 const services = getServices(databaseClient)
@@ -51,6 +54,7 @@ bot.use(onlyAfterSetup)
 bot.use(userChecker)
 
 bot.hears(/^\/([-+])(\d+)/, onlyChat, onlyScoreAdmin, manageScore)
+bot.hears(/^\/mute (\d+)$/, onlyChat, onlyScoreAdmin, mute)
 
 bot.on('chat_join_request', joinRequest)
 
@@ -79,17 +83,17 @@ bot.hears(/^\/set_package_months (\d+)$/, onlyAdmin, setPackageMonths)
 bot.hears(/^\/add_chat (-\d+)$/, onlyAdmin, addChat)
 bot.hears(/^\/add_admin (\d+)$/, onlyAdmin, addAdmin)
 bot.hears(/^\/remove_admin (\d+)$/, onlyAdmin, removeAdmin)
+bot.hears(/^\/exclude (\d+)$/, onlyAdmin, exclude)
+bot.hears(/^\/unban (\d+)$/, onlyAdmin, unban)
 bot.command('levels', onlyAdmin, levels)
 
 bot.on('text', start)
 
 //TODO реализовать автоматическое исключение из чата тех, у кого нет или закончилась подписка
 // (это должен быть, скорее всего, отдельный процесс или может даже отдельный скрипт)
+// Он должен очищать EndDate и убирать активную подписку
 
 // TODO реализовать возможность главному админу забирать или выдавать пользователям месяцы доступа или вечный доступ
-
-// TODO реализовать возможность главному админу исключать и возвращать участника из сообщества
-//  (без возможности даже взаимодействовать с ботом)
 
 //TODO реализовать оплату (с использованием сторонних сервисов,
 // а проверку оплаты может делать отдельный скрипт или процесс)

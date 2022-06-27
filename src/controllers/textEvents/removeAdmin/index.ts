@@ -10,6 +10,6 @@ export default async (ctx: TextRegExContext) => {
   const regularAdminType = await ctx.services.AdminTypes.getAdminType('regular')
   if (!regularAdminType) throw new KnownError('В базе отсуствует тип администратора "regular".')
   await ctx.services.AdminTypes.removeFromAdmin(user.id, regularAdminType.id)
-  await ctx.services.Subscriptions.turnSubscriptionOfUser(user.id, false)
+  if (!user.subscription.end_date) await ctx.services.Subscriptions.turnSubscriptionOfUser(user.id, false)
   return ctx.reply(ctx.locales.scenes.remove_admin)
 }

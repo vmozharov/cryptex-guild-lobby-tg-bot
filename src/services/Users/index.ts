@@ -22,6 +22,13 @@ export default class UsersService extends Service {
     })
   }
 
+  public async turnExcludeUser(user_id: number, excluded: boolean) {
+    return await this.database.user.update({
+      where: {id: user_id},
+      data: {excluded}
+    })
+  }
+
   public async updateScoreUser(targetID: number, score: number, fromID: number): Promise<FullUser> {
     await this.database.history_scores.create({
       data: {

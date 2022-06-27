@@ -44,6 +44,13 @@ export default class SubscriptionsService extends Service {
     if (!userSubscription.active) await this.turnSubscriptionOfUser(userID, true)
   }
 
+  public async removeEndDateSubscriptionOfUser(userID: number) {
+    await this.database.user_subscription.updateMany({
+      where: {user: {id: userID}},
+      data: {end_date: null}
+    })
+  }
+
   public async turnSubscriptionOfUser(userID: number, active: boolean) {
     await this.database.user_subscription.updateMany({
       where: {user: {id: userID}},
